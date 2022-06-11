@@ -1,0 +1,106 @@
+.section {
+  padding: 24px 40px;
+
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 32px;
+
+    .title {
+      margin-bottom: 0;
+    }
+  }
+
+  .container {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    gap: 20px;
+
+    .part {
+      padding: 24px 20px;
+      width: 50%;
+      border-radius: 9px;
+      background-color: #efefef;
+
+      .title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 500;
+        color: #253033;
+      }
+
+      .list {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 16px;
+        padding: 0;
+        list-style: none;
+
+        .item {
+          .button {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            width: 100%;
+            outline: none;
+            border: 1px solid transparent;
+            border-radius: 7px;
+            background-color: #fff;
+            transition: all 0.4s;
+
+            &:hover {
+              border-color: #e5e5e5;
+              cursor: pointer;
+            }
+
+            .name {
+              font-size: 17px;
+              font-weight: 500;
+              color: #253033;
+            }
+  
+            .box {
+              display: flex;
+              align-items: center;
+              gap: 16px;
+  
+              .type {
+                line-height: 1;
+                font-size: 15px;
+                color: #d9d9d9;
+              }
+  
+              .delete {
+                padding: 4px 8px;
+                border: 1px solid transparent;
+                border-radius: 7px;
+                background-color: #fff;
+                transition: all 0.4s;
+  
+                &:hover {
+                  transform: scale(1.05);
+                  border-color: #ff610c;
+                  cursor: pointer;
+  
+                  .icon > svg {
+                    fill: #ff610c;
+                  }
+                }
+  
+                .icon > svg {
+                  fill: #0c8aff;
+                  transition: all 0.4s;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
