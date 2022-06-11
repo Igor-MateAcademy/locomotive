@@ -1,9 +1,9 @@
 import React, { useState, ReactNode } from 'react';
 import { Input, Form, Select } from 'antd';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 // components
-import { Modal, Button } from 'components';
+import { Modal, Button, notification } from 'components';
 
 // models
 import { DriverDTO } from 'models';
@@ -16,6 +16,8 @@ import styles from './styles.module.scss';
 
 interface Props {
   children: ReactNode;
+  update: () => void;
+  driver?: DriverDTO;
 }
 
 const { Item, useForm } = Form;
@@ -26,14 +28,12 @@ const DEFAULT_DRIVER: DriverDTO = {
   driverClass: 'LOW',
 }
 
-const CreateDriverModal: React.FC<Props> = ({ children }) => {
-  const { driversStore } = useStore(); 
+const DriverModal: React.FC<Props> = ({ children, update, driver }) => {
+  const { driversStore } = useStore();
   const [form] = useForm();
 
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [driver, setDriver] = useState<DriverDTO>({
-    ...DEFAULT_DRIVER,
-  });
+  const [driverItem, setDriverItem] = useState<DriverDTO>(driver ? { ...driver } : { ...DEFAULT_DRIVER });
 
   const onToggleModal = () => {
     isOpen && form.resetFields();
@@ -42,16 +42,40 @@ const CreateDriverModal: React.FC<Props> = ({ children }) => {
   };
 
   const inputHandler = (field: keyof DriverDTO, value: string) => {
-    setDriver({
-      ...driver,
+    setDriverItem({
+      ...driverItem,
       [field]: value,
     });
   };
 
   const onSubmit = async () => {
-    const status = await driversStore.createDriver(driver);
+    if (driver) {
+      await driversStore.patchDriver(driver.id && driver.id, driverItem);
+    } else {
+      const status = await driversStore.createDriver(driver);
 
-    console.log(status);
+      if (status === 201) {
+        notification('success', 'Success!', 'New driver was successfully created');
+      } else {
+        notification('warning', 'Oops...', 'Something went wrong');
+      }
+    }
+
+    onToggleModal();
+    await update();
+  };
+
+  const deleteDriver = async () => {
+    const status = await driversStore.deleteDriver(driver.id);
+
+    if (status === 200) {
+      notification('success', 'Success!', 'New driver was successfully deleted');
+    } else {
+      notification('warning', 'Oops...', 'Something went wrong');
+    }
+
+    onToggleModal();
+    await update();
   };
 
   return (
@@ -63,17 +87,15 @@ const CreateDriverModal: React.FC<Props> = ({ children }) => {
       <Modal
         visible={isOpen}
         onCancel={onToggleModal}
-        title="Create driver"
+        title={driver ? 'Driver details' : 'Create driver'}
       >
         <div className={styles.modal}>
           <Form
             layout="vertical"
             validateTrigger={['onBlur', 'onChange', 'onSubmit']}
             form={form}
-            initialValues={{
-              ...DEFAULT_DRIVER,
-            }}
-            onFinish={() => {onSubmit()}}
+            initialValues={driver ? { ...driver } : { ...DEFAULT_DRIVER }}
+            onFinish={() => { onSubmit() }}
           >
             <Item
               label="First Name"
@@ -132,12 +154,23 @@ const CreateDriverModal: React.FC<Props> = ({ children }) => {
               />
             </Item>
 
-            <Button
-              text="Create"
-              icon={<PlusOutlined />}
-              style={{ width: '40%' }}
-              htmlType="submit"
-            />
+            <div className={styles.buttons}>
+              <Button
+                text={driver ? 'Update' : 'Create'}
+                icon={<PlusOutlined />}
+                htmlType="submit"
+              />
+
+              {driver && (
+                <Button
+                  text={'Delete'}
+                  icon={<DeleteOutlined />}
+                  onClick={deleteDriver}
+                  danger
+                  type="default"
+                />
+              )}
+            </div>
           </Form>
         </div>
       </Modal>
@@ -145,5 +178,4 @@ const CreateDriverModal: React.FC<Props> = ({ children }) => {
   );
 };
 
-export default CreateDriverModal;
-
+export default DriverModal;

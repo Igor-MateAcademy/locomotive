@@ -14,9 +14,11 @@ class DriversStore {
   @observable drivers: DriverDTO[] = [];
 
   @action async getDrivers() {
-    const responce = await api.get('/drivers');
+    const { data, status } = await api.get('/drivers');
 
-    return responce;
+    this.drivers = [...data];
+
+    return { data, status };
   }
 
   @action async getFreeDrivers() {
@@ -28,17 +30,25 @@ class DriversStore {
   }
 
   @action async createDriver(dto: DriverDTO) {
-    const { status } = await api.post('/drivers', { ...dto });
+    const { data, status } = await api.post('/drivers', { ...dto });
+
+    this.drivers.push(data);
 
     return status;
   }
 
-  @action async patchDriver(id: string, dto: Partial<DriverDTO>) {
-    console.log(id, dto);
+  @action async patchDriver(id: number, dto: Partial<DriverDTO>) {
+    const { data, status } = await api.patch(`/drivers?driver_id=${id}`, { ...dto });
+
+    return status;
   }
 
-  @action async deleteDriver(id: string) {
-    console.log(id);
+  @action async deleteDriver(id: number) {
+    const { status } = await api.delete(`/drivers?driver_id=${id}`);
+
+    this.drivers = this.drivers.filter(item => item.id !== id);
+
+    return status;
   }
 }
 
