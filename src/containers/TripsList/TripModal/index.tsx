@@ -97,9 +97,13 @@ const TripModal: React.FC<Props> = ({ trip, update, children }) => {
 
   const submit = async () => {
     if (trip) {
-      const status = await tripsStore.patchTrip(trip.id, info);
+      const status = await tripsStore.patchTrip(trip.id, {
+        ...info,
+        startDate: moment(info.startDate).seconds(0).format('YYYY-MM-DD H:mm:ss'),
+        endDate: moment(info.endDate).seconds(0).format('YYYY-MM-DD H:mm:ss'),
+      });
 
-      if (status === 304) {
+      if (status === 200) {
         notification('success', 'Success!', 'Trip was successfully updated');
       } else {
         notification('warning', 'Oops...', 'Something went wrong');

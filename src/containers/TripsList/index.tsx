@@ -68,7 +68,7 @@ const TripsList: React.FC = () => {
 
                 <ul className={styles.list}>
                   {inTransit.map(trip => (
-                    <TripModal update={init} trip={trip}>
+                    <TripModal update={init} trip={trip} key={trip.id}>
                       <li className={styles.item}>
                         <button className={styles.button}>
                           <div>
@@ -102,7 +102,7 @@ const TripsList: React.FC = () => {
 
                 <ul className={styles.list}>
                   {finished.map(trip => (
-                    <TripModal update={init} trip={trip}>
+                    <TripModal update={init} trip={trip} key={trip.id}>
                       <li className={styles.item}>
                         <button className={styles.button}>
                           <div>

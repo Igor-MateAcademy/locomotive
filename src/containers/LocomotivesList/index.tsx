@@ -95,7 +95,7 @@ const LocomotivesList: React.FC = () => {
 
                     <ul className={styles.list}>
                       {free.map(l => (
-                        <LocomotiveModal locomotive={l} update={init}>
+                        <LocomotiveModal locomotive={l} update={init} key={l.id}>
                           <li className={styles.item}>
                             <button className={styles.button}>
                               <div className={styles.name}>
@@ -125,7 +125,7 @@ const LocomotivesList: React.FC = () => {
 
                     <ul className={styles.list}>
                       {busy.map(l => (
-                        <LocomotiveModal locomotive={l} update={init}>
+                        <LocomotiveModal locomotive={l} update={init} key={l.id}>
                           <li className={styles.item}>
                             <button className={styles.button}>
                               <div className={styles.name}>
