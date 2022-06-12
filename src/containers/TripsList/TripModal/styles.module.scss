@@ -1,0 +1,33 @@
+.modal {
+  padding: 12px 20px;
+
+  .part {
+    padding: 12px 16px;
+    border: 1px solid #e6e5e5;
+    border-radius: 7px;
+    margin-bottom: 20px;
+  }
+
+  .info,
+  .cities,
+  .fuel {
+    display: flex;
+    gap: 20px;
+
+    > div {
+      width: 50%;
+    }
+  }
+
+  .dates {
+    .date {
+      display: flex;
+      gap: 28px;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+  }
+}

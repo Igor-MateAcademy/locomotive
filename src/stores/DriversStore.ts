@@ -22,7 +22,9 @@ class DriversStore {
   }
 
   @action async getFreeDrivers() {
-    console.log('get free drivers');
+    const drivers = await api.get('drivers/free');
+
+    return drivers;
   }
 
   @action async getBusyDrivers() {

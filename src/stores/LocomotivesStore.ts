@@ -52,6 +52,12 @@ class LocomotivesStore {
 
     return status;
   }
+
+  @action async getLocomotivesByDriver (id: number) {
+    const { data } = await api.get(`locomotives/driver?driver_id=${id}`);
+
+    return data;
+  }
 }
 
 export default new LocomotivesStore();
