@@ -52,7 +52,7 @@ const DriverModal: React.FC<Props> = ({ children, update, driver }) => {
     if (driver) {
       await driversStore.patchDriver(driver.id && driver.id, driverItem);
     } else {
-      const status = await driversStore.createDriver(driver);
+      const status = await driversStore.createDriver(driverItem);
 
       if (status === 201) {
         notification('success', 'Success!', 'New driver was successfully created');
